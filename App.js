@@ -1,20 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+// import tw from 'twrnc';
+import tw from 'twrnc';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <View className={tw`flex-1 justify-center items-center gap-4 bg-white`}>
+        <Ionicons name='play' size={70} color='black'/>
+        <Text className={tw`text-[#ff0000] text-lg dark:text-white`}>Start</Text>
+        <StatusBar style="auto" />
+      </View>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
