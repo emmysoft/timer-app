@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import Constants from 'expo-constants';
 import tw from 'twrnc';
@@ -45,18 +45,23 @@ export default function App() {
     <>
       <StatusBar backgroundColor="#07121B" />
       <SafeAreaView style={{ marginTop: Constants.statusBarHeight }}>
-        <View style={tw`flex justify-center items-center gap-4 bg-[#07121B] h-full p-24`}>
-          <View style={tw`p-4`}>
+        <View style={tw`flex justify-start items-center gap-4 bg-[#07121B] h-full p-24`}>
+          <View style={tw`p-2`}>
+            <Text style={tw`font-bold text-3xl text-[#fff] bg-[#07121B]`}>Timer App</Text>
+          </View>
+          <View style={tw`p-4 flex flex-row justify-center items-center gap-3 w-full`}>
             <TextInput
-              style={tw`border-[#fff] border-2 rounded-md min-w-full py-4 px-4`}
-              placeholder='enter task...'
+              style={tw`border-[#fff] border-2 rounded-md min-w-full py-4 px-4 text-white`}
+              placeholder='Enter new task here...'
               placeholderTextColor={"#fff"}
               onChangeText={(e) => setTask(e)}
               value={task}
             />
-          </View>
-          <View style={tw`bottom-72 right-28`}>
-            <Text style={tw`font-bold text-3xl text-[#fff] bg-[#07121B] top-12`}>Timer App</Text>
+            <TouchableOpacity style={tw`py-4 px-6 rounded-md bg-[#ff851b]`} onPress={() => handleToggle()}>
+              {isActive ?
+                <Text style={tw`text-[#07121b] text-lg font-bold`}>Pause</Text> :
+                <Text style={tw`text-[#07121b] text-lg font-bold`}>Start</Text>}
+            </TouchableOpacity>
           </View>
           <View style={tw`flex justify-center items-center gap-6 pt-12`}>
             {isActive
@@ -66,26 +71,17 @@ export default function App() {
               <Ionicons name='play' size={70} color='#fff' />
             }
             <Text style={tw`text-[#fff] text-5xl font-bold`}>{`${mins}:${sec}`}</Text>
-            <View style={tw`flex flex-row justify-center items-center gap-5`}>
-              <TouchableOpacity onPress={() => handleToggle()} style={tw`p-2 rounded-md border-[#fff] border-2`}>
-                {isActive
-                  ?
-                  <Text style={tw`text-[#fff] text-xl font-bold`}>
-                    Pause
-                  </Text>
-                  :
-                  <Text style={tw`text-[#fff] text-xl font-bold`}>
-                    Start
-                  </Text>}
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => reset()} style={tw`p-2 rounded-md border-[#ff851b] border-2`}>
+            <View style={tw`p-4`}>
+              <TouchableOpacity onPress={() => reset()} style={tw`px-6 py-2 rounded-md border-[#ff851b] border-2 w-full`}>
                 <Text style={tw`text-[#ff851b] text-xl font-bold`}>
                   Reset
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
-          <StatusBar style="auto" />
+          <ScrollView style={tw`p-4`}>
+            <Text style={tw`text-xl text-[#fff] font-bold text-center`}>Tasks</Text>
+          </ScrollView>
         </View>
       </SafeAreaView>
     </>
