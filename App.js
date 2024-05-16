@@ -79,8 +79,25 @@ export default function App() {
               </TouchableOpacity>
             </View>
           </View>
-          <ScrollView style={tw`p-4`}>
+          <ScrollView style={tw`p-8 min-w-full`}>
             <Text style={tw`text-xl text-[#fff] font-bold text-center`}>Tasks</Text>
+            <View style={tw`flex flex-row justify-center items-center gap-12 pt-12`}>
+              <Text style={tw`text-white font-bold text-xl`}>Task A</Text>
+              <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
+            </View>
+            <View style={tw`flex flex-row justify-center items-center gap-12 pt-12`}>
+              <Text style={tw`text-white font-bold text-xl`}>Task A</Text>
+              <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
+            </View><View style={tw`flex flex-row justify-center items-center gap-12 pt-12`}>
+              <Text style={tw`text-white font-bold text-xl`}>Task A</Text>
+              <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
+            </View><View style={tw`flex flex-row justify-center items-center gap-12 pt-12`}>
+              <Text style={tw`text-white font-bold text-xl`}>Task A</Text>
+              <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
+            </View><View style={tw`flex flex-row justify-center items-center gap-12 pt-12`}>
+              <Text style={tw`text-white font-bold text-xl`}>Task A</Text>
+              <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
+            </View>
           </ScrollView>
         </View>
       </SafeAreaView>
