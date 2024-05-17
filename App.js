@@ -19,9 +19,16 @@ export default function App() {
   const { mins, sec } = getRemaining(remainingSecs);
 
   const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [checkTasks, setCheckTasks] = useState(true);
 
   const handleToggle = () => {
     setIsActive(!isActive);
+    // console.log(task);
+    setCheckTasks(false);
+    setTasks((currentTasks) => {
+      return [...currentTasks, task];
+    });
   }
 
   useEffect(() => {
@@ -39,6 +46,7 @@ export default function App() {
   const reset = () => {
     setRemainingSecs(0);
     setIsActive(false);
+    setCheckTasks(true);
   }
 
   return (
@@ -79,26 +87,22 @@ export default function App() {
               </TouchableOpacity>
             </View>
           </View>
-          <ScrollView style={tw`p-8 min-w-full`}>
-            <Text style={tw`text-xl text-[#fff] font-bold text-center`}>Tasks</Text>
-            <View style={tw`flex flex-row justify-center items-center gap-12 pt-12`}>
-              <Text style={tw`text-white font-bold text-xl`}>Task A</Text>
-              <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
+
+          <Text style={tw`text-xl text-[#fff] font-bold text-center`}>Tasks</Text>
+          {checkTasks
+            ?
+            <Text style={tw`text-xl text-[#ff851b] font-bold text-center`}>No tasks yet!</Text>
+            :
+            <View style={tw`flex flex-col justify-center items-center gap-5`}>
+              {tasks.map((goal) =>
+                <View style={tw`flex flex-row justify-center items-center gap-12`}>
+                  <Text key={goal} style={tw`text-white font-bold text-xl`}>{goal}</Text>
+                  <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
+                  <Ionicons name='trash' size={30} color='#ff851b' onPress={() => setCheckTasks(true)} />
+                </View>
+              )}
             </View>
-            <View style={tw`flex flex-row justify-center items-center gap-12 pt-12`}>
-              <Text style={tw`text-white font-bold text-xl`}>Task A</Text>
-              <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
-            </View><View style={tw`flex flex-row justify-center items-center gap-12 pt-12`}>
-              <Text style={tw`text-white font-bold text-xl`}>Task A</Text>
-              <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
-            </View><View style={tw`flex flex-row justify-center items-center gap-12 pt-12`}>
-              <Text style={tw`text-white font-bold text-xl`}>Task A</Text>
-              <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
-            </View><View style={tw`flex flex-row justify-center items-center gap-12 pt-12`}>
-              <Text style={tw`text-white font-bold text-xl`}>Task A</Text>
-              <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
-            </View>
-          </ScrollView>
+          }
         </View>
       </SafeAreaView>
     </>
