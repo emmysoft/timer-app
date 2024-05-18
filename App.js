@@ -1,10 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import Constants from 'expo-constants';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-// import { SymbolView } from 'expo-symbols';
 
 const formatNumber = number => `0${number}`.slice(-2);
 const getRemaining = (time) => {
@@ -23,13 +22,16 @@ export default function App() {
   const [tasks, setTasks] = useState([]);
   const [checkTasks, setCheckTasks] = useState(true);
 
-  const handleToggle = () => {
+  const handleTime = () => {
     setIsActive(!isActive);
-    // console.log(task);
     setCheckTasks(false);
+  }
+
+  const handleAddTasks = () => {
     setTasks((currentTasks) => {
-      return [...currentTasks, task];
-    });
+      return [...currentTasks, task]
+    })
+    setIsActive(!isActive)
   }
 
   useEffect(() => {
@@ -65,46 +67,53 @@ export default function App() {
               onChangeText={(e) => setTask(e)}
               value={task}
             />
-            <View style={tw`flex flex-row justify-center items-center gap-5`}>
-              <TouchableOpacity style={tw`py-4 px-6 rounded-md bg-[#ff851b]`} onPress={() => handleToggle()}>
+            <View style={tw`flex flex-row justify-center items-center gap-5 p-2`}>
+              <TouchableOpacity style={tw`py-4 px-6 rounded-md bg-[#ff851b]`} onPress={handleTime}>
                 {isActive ?
                   <Text style={tw`text-[#07121b] text-lg font-bold`}>Pause</Text>
                   :
                   <Text style={tw`text-[#07121b] text-lg font-bold`}>Start</Text>
                 }
               </TouchableOpacity>
-              <TouchableOpacity style={tw`py-4 px-6 rounded-md bg-[#ff851b]`} onPress={reset}>
-                <Ionicons name='add' size={24} color='#07121b' />
+              <TouchableOpacity style={tw`py-4 px-6 rounded-md bg-[#ff851b]`} onPress={handleAddTasks}>
+                <Ionicons name='add-outline' size={24} color='#07121b' />
               </TouchableOpacity>
             </View>
           </View>
 
-          <Text style={tw`text-xl text-[#fff] font-bold text-center`}>Tasks</Text>
-          {checkTasks
-            ?
-            <Text style={tw`text-xl text-[#ff851b] font-bold text-center`}>No tasks yet!</Text>
-            :
-            <View style={tw`flex flex-col justify-center items-center gap-5`}>
-              {tasks.map((goal, index) => (
-                <View style={tw`flex flex-row justify-center items-center gap-12 w-full`}>
-                  <Text key={index.toString()} style={tw`text-white font-bold text-xl`}>{goal}</Text>
-                  <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
-                  <View style={tw`flex flex-row justify-center items-center gap-2`}>
-                    <Ionicons name='trash' size={20} color='#ff851b' onPress={() => setCheckTasks(true)} />
-                    <Ionicons name='refresh-outline' size={20} color='#ff851b' onPress={reset} />
-                    {isActive
-                      ?
-                      <Ionicons name="pause" size={20} color={'#ff851b'} onPress={handleToggle} />
-                      :
-                      <Ionicons name="play" size={30} color={'#ff851b'} onPress={handleToggle} />
-                    }
-                  </View>
-                </View>
-              ))}
+          <View style={tw`flex flex-col justify-center items-center gap-6 pt-5`}>
+            <Text style={tw`text-3xl text-[#fff] font-bold text-center`}>Tasks</Text>
+            <View style={tw`min-w-full`}>
+              {checkTasks
+                ?
+                <Text style={tw`text-sm text-[#ff851b] text-center`}>No tasks yet!</Text>
+                :
+                <FlatList
+                  data={tasks}
+                  renderItem={(itemData) => (
+                    <View style={tw`flex flex-row justify-center items-center gap-12`}>
+                      <Text style={tw`text-white font-bold text-xl`}>{itemData.item}</Text>
+                      <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
+                      <View style={tw`flex flex-row justify-center items-center gap-2`}>
+                        <Ionicons name='trash' size={20} color='#ff851b' onPress={() => setCheckTasks(true)} />
+                        <Ionicons name='refresh-outline' size={20} color='#ff851b' onPress={reset} />
+                        {isActive
+                          ?
+                          <Ionicons name="pause" size={20} color={'#ff851b'} onPress={handleTime} />
+                          :
+                          <Ionicons name="play" size={30} color={'#ff851b'} onPress={handleTime} />
+                        }
+                      </View>
+                    </View>
+                  )}
+                  // keyExtractor={(item, index) => index.toString()}
+                  alwaysBounceVertical={false}
+                />
+              }
             </View>
-          }
+          </View>
         </View>
-      </SafeAreaView>
+      </SafeAreaView >
     </>
   );
 }
