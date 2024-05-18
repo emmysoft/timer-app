@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import Constants from 'expo-constants';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
+// import { SymbolView } from 'expo-symbols';
 
 const formatNumber = number => `0${number}`.slice(-2);
 const getRemaining = (time) => {
@@ -46,7 +47,6 @@ export default function App() {
   const reset = () => {
     setRemainingSecs(0);
     setIsActive(false);
-    setCheckTasks(true);
   }
 
   return (
@@ -57,33 +57,24 @@ export default function App() {
           <View style={tw`p-2`}>
             <Text style={tw`font-bold text-3xl text-[#fff] bg-[#07121B]`}>Timer App</Text>
           </View>
-          <View style={tw`p-4 flex flex-row justify-center items-center gap-3 w-full`}>
+          <View style={tw`px-12 flex justify-center items-center gap-6`}>
             <TextInput
-              style={tw`border-[#fff] border-2 rounded-md min-w-full py-4 px-4 text-white`}
+              style={tw`border-[#fff] border-2 rounded-md w-full py-4 px-12 text-white`}
               placeholder='Enter new task here...'
               placeholderTextColor={"#fff"}
               onChangeText={(e) => setTask(e)}
               value={task}
             />
-            <TouchableOpacity style={tw`py-4 px-6 rounded-md bg-[#ff851b]`} onPress={() => handleToggle()}>
-              {isActive ?
-                <Text style={tw`text-[#07121b] text-lg font-bold`}>Pause</Text> :
-                <Text style={tw`text-[#07121b] text-lg font-bold`}>Start</Text>}
-            </TouchableOpacity>
-          </View>
-          <View style={tw`flex justify-center items-center gap-6 pt-12`}>
-            {isActive
-              ?
-              <Ionicons name='pause' size={70} color='#fff' />
-              :
-              <Ionicons name='play' size={70} color='#fff' />
-            }
-            <Text style={tw`text-[#fff] text-5xl font-bold`}>{`${mins}:${sec}`}</Text>
-            <View style={tw`p-4`}>
-              <TouchableOpacity onPress={() => reset()} style={tw`px-6 py-2 rounded-md border-[#ff851b] border-2 w-full`}>
-                <Text style={tw`text-[#ff851b] text-xl font-bold`}>
-                  Reset
-                </Text>
+            <View style={tw`flex flex-row justify-center items-center gap-5`}>
+              <TouchableOpacity style={tw`py-4 px-6 rounded-md bg-[#ff851b]`} onPress={() => handleToggle()}>
+                {isActive ?
+                  <Text style={tw`text-[#07121b] text-lg font-bold`}>Pause</Text>
+                  :
+                  <Text style={tw`text-[#07121b] text-lg font-bold`}>Start</Text>
+                }
+              </TouchableOpacity>
+              <TouchableOpacity style={tw`py-4 px-6 rounded-md bg-[#ff851b]`} onPress={reset}>
+                <Ionicons name='add' size={24} color='#07121b' />
               </TouchableOpacity>
             </View>
           </View>
@@ -94,13 +85,22 @@ export default function App() {
             <Text style={tw`text-xl text-[#ff851b] font-bold text-center`}>No tasks yet!</Text>
             :
             <View style={tw`flex flex-col justify-center items-center gap-5`}>
-              {tasks.map((goal) =>
-                <View style={tw`flex flex-row justify-center items-center gap-12`}>
-                  <Text key={goal} style={tw`text-white font-bold text-xl`}>{goal}</Text>
+              {tasks.map((goal, index) => (
+                <View style={tw`flex flex-row justify-center items-center gap-12 w-full`}>
+                  <Text key={index.toString()} style={tw`text-white font-bold text-xl`}>{goal}</Text>
                   <Text style={tw`text-white font-bold text-lg`}>{`${mins}:${sec}`}</Text>
-                  <Ionicons name='trash' size={30} color='#ff851b' onPress={() => setCheckTasks(true)} />
+                  <View style={tw`flex flex-row justify-center items-center gap-2`}>
+                    <Ionicons name='trash' size={20} color='#ff851b' onPress={() => setCheckTasks(true)} />
+                    <Ionicons name='refresh-outline' size={20} color='#ff851b' onPress={reset} />
+                    {isActive
+                      ?
+                      <Ionicons name="pause" size={20} color={'#ff851b'} onPress={handleToggle} />
+                      :
+                      <Ionicons name="play" size={30} color={'#ff851b'} onPress={handleToggle} />
+                    }
+                  </View>
                 </View>
-              )}
+              ))}
             </View>
           }
         </View>
